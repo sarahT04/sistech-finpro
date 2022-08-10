@@ -34,8 +34,8 @@ export default function PostList() {
         isLoading
           ? <Loading />
           : datas?.pages.map((page) => (
-            page?.results.map((data) => (
-              <Post key={data.name} {...data} />
+            page?.results.map((data, index) => (
+              <Post key={data.name} {...data} id={index + 1} />
             ))
           ))
       }

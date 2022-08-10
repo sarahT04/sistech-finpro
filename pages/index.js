@@ -11,7 +11,6 @@ export default function Home() {
       <Head>
         <title>Erika</title>
         <meta name="description" content="A female haven for all the gamers." />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <ContentWrapper>
         <QueryClientProvider client={postClient}>

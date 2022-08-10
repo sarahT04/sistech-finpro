@@ -1,3 +1,5 @@
+// UNUSED FOR NOW
+
 export default function Icon({ icon }) {
   return (
     <button>
