@@ -37,3 +37,6 @@ next-env.d.ts
 
 # api calls thru vsc
 api.rest
+
+# linter cuz i have a love hate relationship
+.eslintrc.json
