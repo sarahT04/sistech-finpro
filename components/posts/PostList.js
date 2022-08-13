@@ -1,29 +1,23 @@
 /* eslint-disable no-nested-ternary */
 import { useInfiniteQuery } from '@tanstack/react-query';
-import React from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { getApiDatas, getPageParamFromString } from '../../utils/utils';
 import Loading from '../template/Loading';
 import Post from './Post';
-
-const API_URL = 'https://swapi.dev/api/people?page=';
-
-const getPageParamFromString = (string) => Number(string?.split('=')[1]);
 
 export default function PostList() {
   const { ref, inView } = useInView();
   // Infinite query
   const {
     data: datas, isLoading, fetchNextPage, isFetchingNextPage,
-  } = useInfiniteQuery(['post-data'], async ({ pageParam = 1 }) => {
-    const data = await fetch(API_URL + pageParam);
-    return data.json();
-  }, {
-    getPreviousPageParam: (firstPage) => getPageParamFromString(firstPage?.previous),
-    getNextPageParam: (lastPage) => getPageParamFromString(lastPage?.next),
+  } = useInfiniteQuery(['post-data'], getApiDatas, {
+    getPreviousPageParam: (firstPage) => getPageParamFromString(firstPage.previous || undefined),
+    getNextPageParam: (lastPage) => getPageParamFromString(lastPage.next || undefined),
   });
 
   // If the div is in the view, fetch next page.
-  React.useEffect(() => {
+  useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
@@ -33,20 +27,19 @@ export default function PostList() {
       {
         isLoading
           ? <Loading />
-          : datas?.pages.map((page) => (
-            page?.results.map((data, index) => (
+          : datas.pages.map((page) => (
+            page.results.map((data, index) => (
               <Post key={data.name} {...data} id={index + 1} />
             ))
           ))
       }
       <div ref={ref} id='load-more'>
-        <p>
-          {isFetchingNextPage
-            ? <Loading />
-            : isLoading
-              ? ''
-              : 'The end of the page.'}
-        </p>
+        {isFetchingNextPage
+          ? <Loading />
+          : isLoading
+            ? ''
+            : <p>The end of the page.</p>}
+
       </div>
     </div>
   );

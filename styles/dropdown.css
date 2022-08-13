@@ -1,0 +1,17 @@
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background-color: var(--primary-color);
+    border: 1px solid var(--quartenary-color);
+    transform: translateX(-70%);
+}
+
+.dropdown-content li:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}

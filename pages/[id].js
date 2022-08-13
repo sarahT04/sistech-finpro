@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import Post from '../components/posts/Post';
 import ContentWrapper from '../components/template/ContentWrapper';
+import { siteTitle, siteDescription } from '../utils/constants';
 
 const SSRID = ({ data = [] }) => (
   <>
     <Head>
-      <title>{data.name}-Erika</title>
-      <meta name="description" content="A female haven for all the gamers." />
+      <title>{data.name} - {siteTitle}</title>
+      <meta name="description" content={siteDescription} />
     </Head>
     <ContentWrapper>
       <div id="post-list">

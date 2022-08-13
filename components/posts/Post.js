@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import Link from 'next/link';
-import { dateToEnUsString } from '../../utils/refactorDate';
+import { dateToEnUsString } from '../../utils/utils';
 
 export default function Post({
   // eslint-disable-next-line max-len

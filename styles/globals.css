@@ -59,7 +59,7 @@ header h1 {
   display: inline-block;
 }
 
-header h1 {
+header #logo-header {
   margin-right: auto;
 }
 
@@ -73,6 +73,8 @@ ul>li {
 }
 
 li {
+  text-decoration: none;
+  list-style: none;
   padding: 1rem 3rem 1rem 1rem;
 }
 
@@ -103,7 +105,7 @@ li {
 
 #post-list {
   max-width: 750px;
-  display: flex; 
+  display: flex;
   align-items: center;
   flex-direction: column;
   margin: auto;
@@ -120,6 +122,7 @@ li {
   padding: var(--md-rem);
   margin-bottom: var(--md-rem);
   color: var(--tertiary-color);
+  min-width: 100%;
 }
 
 .username-date-div,
@@ -128,6 +131,20 @@ li {
   justify-content: space-between;
   align-items: center;
 }
+
+#logo-header {
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  #logo-header>h1 {
+    display: none
+  }
+}
+
 
 /* @media (prefers-color-scheme: dark) {
   html {
