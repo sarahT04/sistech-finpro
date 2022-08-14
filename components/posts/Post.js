@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { dateToEnUsString } from '../../utils/utils';
 
@@ -12,7 +13,7 @@ export default function Post({
         staticData
           ? <>
             <div className="username-date-div"><h3>{title}, by {username}</h3><p>{date}</p></div>
-            <div className="post-div"><p>{content}</p></div>
+            <article className="post-div"><p>{content}</p></article>
             <div className="likes-category-div"><span>{likes}</span><p>{category.join(', ')}</p></div>
             <div className="comments-div">{comments}</div>
           </>
@@ -23,12 +24,22 @@ export default function Post({
             <div className="post-div"><p>Plays in:<br />{films.join(', ')}</p></div>
             <div className="likes-category-div"><span>A {mass} massed of</span><p>{gender}</p></div>
             <div className="comments-div">Look more at: {url}</div>
+            {/* <Footer /> */}
           </>
       }
     </div>
   );
 }
 
+function Footer({ comments }) {
+  return (
+    <footer>
+      <FontAwesomeIcon />
+      <FontAwesomeIcon />
+      <span>{comments} comments</span>
+    </footer>
+  );
+}
 /*
 <div className="post" id={name}>
       <div className="username-date-div"><h3>{name}, by {homeworld}</h3><p>{created}</p></div>

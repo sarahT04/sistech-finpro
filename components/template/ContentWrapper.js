@@ -12,7 +12,6 @@ export default function ContentWrapper({ children }) {
   return (
     <>
       <Header />
-      <Navbar />
       {children}
       <Footer />
     </>
@@ -62,15 +61,15 @@ function Header() {
           <h1 title="Erika">Erika</h1>
         </div>
       </Link>
+      <Navbar />
       {
         authState
           ? <UserProfile onUserAuthentication={onUserAuthentication} />
-          : <>
+          : <div>
             <button id="login" onClick={onUserAuthentication}>Log in</button>
             <button id="register">Register</button>
-          </>
+          </div>
       }
-
     </header>
   );
 }
@@ -78,13 +77,11 @@ function Header() {
 function Navbar() {
   return (
     <nav>
-      <ul>
-        <li>
-          <Link href="/categories">
-            <a>Categories</a>
-          </Link>
-        </li>
-      </ul>
+      <li>
+        <Link href="/categories">
+          <a>Categories</a>
+        </Link>
+      </li>
     </nav >
   );
 }

@@ -1,4 +1,4 @@
-.dropdown:hover .dropdown-content {
+.dropdown {
     display: block;
 }
 
@@ -11,7 +11,15 @@
     transform: translateX(-70%);
 }
 
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 .dropdown-content li:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+.dropdown>* {
+    margin-left: auto;
 }
