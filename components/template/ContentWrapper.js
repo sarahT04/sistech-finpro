@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 // eslint-disable-next-line no-unused-vars
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
-import { selectAuthState, setAuthState } from '../../store/authSlice';
+import { selectAuthState, setAuthState, setToken } from '../../store/authSlice';
 import catLogo from '../../public/cat_logo.png';
 
 export default function ContentWrapper({ children }) {
@@ -26,7 +27,13 @@ export function Footer() {
   );
 }
 
-function UserProfile({ onUserAuthentication }) {
+function UserProfile() {
+  const dispatch = useDispatch();
+  const onUserLogout = () => {
+    localStorage.removeItem('TOKEN');
+    dispatch(setAuthState(false));
+    dispatch(setToken(null));
+  };
   return (
     <div className='dropdown'>
       <FontAwesomeIcon icon={faCircleUser} size="2x" />
@@ -38,7 +45,7 @@ function UserProfile({ onUserAuthentication }) {
           <li title="Set some things">Settings</li>
         </Link>
         {/*  href='/api/logout' */}
-        <li title="Logout" onClick={onUserAuthentication} >Logout</li>
+        <li title="Logout" onClick={onUserLogout} >Logout</li>
       </div>
     </div>
 
@@ -46,12 +53,9 @@ function UserProfile({ onUserAuthentication }) {
 }
 
 function Header() {
+  // localStorage.setItem('TOKEN', JSON.stringify(result.token));
   const authState = useSelector(selectAuthState);
-  const dispatch = useDispatch();
-
-  const onUserAuthentication = () => (authState
-    ? dispatch(setAuthState(false))
-    : dispatch(setAuthState(true)));
+  const router = useRouter();
 
   return (
     <header>
@@ -64,10 +68,10 @@ function Header() {
       <Navbar />
       {
         authState
-          ? <UserProfile onUserAuthentication={onUserAuthentication} />
+          ? <UserProfile/>
           : <div>
-            <button id="login" onClick={onUserAuthentication}>Log in</button>
-            <button id="register">Register</button>
+            <button id="login" onClick={() => router.push('/authentication?state=login')}>Log in</button>
+            <button id="register" onClick={() => router.push('/authentication?state=register')}>Register</button>
           </div>
       }
     </header>

@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import PostList from '../components/posts/PostList';
 import ContentWrapper from '../components/template/ContentWrapper';
 import { siteTitle, siteDescription } from '../utils/constants';
+import PostList from '../components/posts/PostList';
 
 const postClient = new QueryClient();
 
