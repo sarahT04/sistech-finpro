@@ -6,7 +6,7 @@ import Post from './Post';
 export default function PostList() {
   const { data: datas, isLoading } = useQuery(['post-datas'], getApiDatas);
   return (
-    <div id="post-list">
+    <div className="list">
       {
         // eslint-disable-next-line no-nested-ternary
         isLoading

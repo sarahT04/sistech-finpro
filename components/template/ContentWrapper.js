@@ -37,13 +37,6 @@ function UserProfile() {
     <div className='dropdown'>
       <FontAwesomeIcon icon={faCircleUser} size="2x" />
       <div className='dropdown-content'>
-        <Link href='/profile'>
-          <li title="View your profile">Profile</li>
-        </Link>
-        <Link href='/settings'>
-          <li title="Set some things">Settings</li>
-        </Link>
-        {/*  href='/api/logout' */}
         <li title="Logout" onClick={onUserLogout} >Logout</li>
       </div>
     </div>
@@ -67,7 +60,7 @@ function Header() {
       <Navbar />
       {
         authState
-          ? <UserProfile/>
+          ? <UserProfile />
           : <div>
             <button id="login" onClick={() => router.push('/authentication?state=login')}>Log in</button>
             <button id="register" onClick={() => router.push('/authentication?state=register')}>Register</button>

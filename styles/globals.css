@@ -100,7 +100,7 @@ nav>li>a {
   color: var(--primary-color);
 }
 
-#post-list {
+.list {
   max-width: 750px;
   display: flex;
   align-items: center;

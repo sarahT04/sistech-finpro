@@ -1,35 +1,36 @@
 import Head from 'next/head';
-import Post from '../components/posts/Post';
 import ContentWrapper from '../components/template/ContentWrapper';
+import Post from '../components/posts/Post';
 import { siteTitle, siteDescription } from '../utils/constants';
+import { getAllPostInThread } from '../utils/utils';
 
-const SSRID = ({ data = [] }) => (
-  <>
-    <Head>
-      <title>{data.name} - {siteTitle}</title>
-      <meta name="description" content={siteDescription} />
-    </Head>
-    <ContentWrapper>
-      <div id="post-list">
-        <Post staticData={false} {...data} />
-      </div>
-    </ContentWrapper>
-  </>
-);
+export default function SSRID({ data }) {
+  const { name, data: threadDatas } = data;
 
+  const starterIndex = threadDatas.findIndex((post) => post.isStarter);
+  const starterPost = threadDatas.splice(starterIndex, 1)[0];
+  const comments = threadDatas;
+  return (
+    <>
+      <Head>
+        <title>{`${name} - ${siteTitle}`}</title>
+        <meta name="description" content={siteDescription} />
+      </Head>
+
+      <ContentWrapper>
+        <div className='list'>
+          <Post name={name} starterPost={starterPost} comments={comments} />
+        </div>
+      </ContentWrapper>
+    </>
+  );
+}
+
+// eslint-disable-next-line import/prefer-default-export
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  const res = await fetch(`https://swapi.dev/api/people/${id}`, {
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': '*',
-    },
-  });
-  const data = await res.json();
+  const { data } = await getAllPostInThread(id);
   return {
-    props: {
-      data: { ...data, id },
-    },
+    props: { data },
   };
 }
-export default SSRID;

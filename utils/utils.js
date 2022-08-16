@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { BEARER, CATEGORY_URL_LINK, URL_LINK } from './constants';
+import {
+  BEARER, CATEGORY_URL_LINK, THREAD_URL_LINK, URL_LINK,
+} from './constants';
 
 axios.defaults.headers.common.authorization = `Bearer ${BEARER}`;
 
@@ -10,7 +12,12 @@ axios.defaults.headers.common.authorization = `Bearer ${BEARER}`;
 //   }
 // }
 
-export const getApiDatas = async () => axios.get(CATEGORY_URL_LINK);
+export const getAllPostInThread = async (postId) => axios.get(THREAD_URL_LINK + postId);
+
+export const getCategoriesList = async () => axios.get(CATEGORY_URL_LINK);
+
+// eslint-disable-next-line max-len
+export const getAllThreadsInCategory = async (categoryId) => axios.get(CATEGORY_URL_LINK + categoryId);
 
 export const authenticateUser = async ({ state, username, password }) => {
   if (state === 'register') {
