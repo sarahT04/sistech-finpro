@@ -1,31 +1,15 @@
-/* eslint-disable camelcase */
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { dateToEnUsString } from '../../utils/utils';
+import VoteSection from './VoteSection';
 
-export default function Post({ name, comments, starterPost }) {
+export default function Post({
+  name, content, upvote, downvote,
+}) {
   return (
     <div className='post'>
-      <div className='starter'>
-        <h1>{name}</h1>
-        <p>{starterPost.content}</p>
-      </div>
-      {
-        comments.map((comment) => (
-          <div className='comments' key={comment.id}>
-            {comment.content}
-          </div>
-        ))
-      }
+      <h1>{name}</h1>
+      <article>{content}</article>
+      <br />
+      <VoteSection upvote={upvote} downvote={downvote} />
     </div>
-  );
-}
 
-function Footer({ comments }) {
-  return (
-    <footer>
-      <FontAwesomeIcon />
-      <FontAwesomeIcon />
-      <span>{comments} comments</span>
-    </footer>
   );
 }

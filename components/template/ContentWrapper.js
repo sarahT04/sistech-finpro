@@ -21,7 +21,19 @@ export default function ContentWrapper({ children }) {
 export function Footer() {
   return (
     <footer>
-      <h1>Some Footer</h1>
+      <div className='col'>
+        <h3>RISTEK Sistech Final Project</h3>
+        <h4>Software Engineering division</h4>
+        <br />
+        <h3>Built using Next.js</h3>
+        <br />
+        <h4>Made with &#9829; by Sarah</h4>
+        <br />
+        <h5>sarahtanujaya@gmail.com</h5>
+      </div>
+      <div className='col'>
+        <h4>See the Github repo at <br /> https://github.com/sarahT04/sistech-finpro</h4>
+      </div>
     </footer>
   );
 }
@@ -57,7 +69,7 @@ function Header() {
           <h1 title="Erika">Erika</h1>
         </div>
       </Link>
-      <Navbar />
+      {/* <Navbar /> */}
       {
         authState
           ? <UserProfile />
@@ -70,16 +82,16 @@ function Header() {
   );
 }
 
-function Navbar() {
-  return (
-    <nav>
-      <li>
-        <Link href="/categories">
-          <a>Categories</a>
-        </Link>
-      </li>
-    </nav >
-  );
-}
+// function Navbar() {
+//   return (
+//     <nav>
+//       <li>
+//         <Link href="/categories">
+//           <a>Categories</a>
+//         </Link>
+//       </li>
+//     </nav >
+//   );
+// }
 
 // style={{ marginLeft: '100%' }}

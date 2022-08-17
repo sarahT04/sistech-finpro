@@ -39,18 +39,20 @@ function AllThreadsInCategory() {
   });
 
   return (
-    <div className='list'>
-      {isLoading
-        ? <Loading />
-        : threadDatas.map((data) => (
-          <Link href={`/${data.id}`} key={`${data.id}link`}>
-            <div id={data.id}>
-              <p>{data.name}</p>
-            </div>
-          </Link>
-        ))
-
-      }
+    <div className='categories'>
+      <h3>Category: {category}</h3>
+      <div className='list'>
+        {isLoading
+          ? <Loading />
+          : threadDatas.map((data) => (
+            <Link href={`/${data.id}`} key={`${data.id}link`} >
+              <div className='thread'>
+                <p>{data.name}</p>
+              </div>
+            </Link>
+          ))
+        }
+      </div>
     </div>
   );
 }
