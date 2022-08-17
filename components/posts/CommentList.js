@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import Comments from './Comments';
 
 export default function CommentList({ comments, allComments }) {

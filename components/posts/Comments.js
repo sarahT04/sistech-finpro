@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import CommentList from './CommentList';
 import VoteSection from './VoteSection';
 

@@ -11,28 +11,12 @@ import { getAllThreadsInCategory } from '../../utils/utils';
 
 const threadsInCategoryClient = new QueryClient();
 
-export default function CategoryPage() {
-  return (
-    <>
-      <Head>
-        <title>{siteTitle}</title>
-        <meta name="description" content={siteDescription} />
-      </Head>
-      <ContentWrapper>
-        <QueryClientProvider client={threadsInCategoryClient}>
-          <AllThreadsInCategory />
-        </QueryClientProvider>
-      </ContentWrapper>
-    </>
-  );
-}
-
 function AllThreadsInCategory() {
   const router = useRouter();
-  const categoriesState = useSelector(selectCategoriesState);
+  const categoriesState = useSelector(selectCategoriesState) || [];
   const { category } = router.query;
   // eslint-disable-next-line max-len
-  const categoryId = categoriesState.find((categories) => categories.name === category).id;
+  const categoryId = categoriesState.find((categories) => categories.name === category)?.id;
   const { data: threadDatas, isLoading } = useQuery(['threads-in-a-category'], async () => {
     const { data } = await getAllThreadsInCategory(categoryId);
     return data.data;
@@ -54,5 +38,21 @@ function AllThreadsInCategory() {
         }
       </div>
     </div>
+  );
+}
+
+export default function CategoryPage() {
+  return (
+    <>
+      <Head>
+        <title>{siteTitle}</title>
+        <meta name="description" content={siteDescription} />
+      </Head>
+      <ContentWrapper>
+        <QueryClientProvider client={threadsInCategoryClient}>
+          <AllThreadsInCategory />
+        </QueryClientProvider>
+      </ContentWrapper>
+    </>
   );
 }
