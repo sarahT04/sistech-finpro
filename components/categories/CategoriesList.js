@@ -1,14 +1,17 @@
 /* eslint-disable no-nested-ternary */
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query/';
 import Link from 'next/link';
-import { setCategoriesState } from '../../store/authSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { selectAdminState, setCategoriesState } from '../../store/authSlice';
 import { getCategoriesList } from '../../utils/utils';
 import Loading from '../template/Loading';
 import ErrorPage from '../404/404';
 
 export default function CategoriesList() {
   const dispatch = useDispatch();
+  const isAdmin = useSelector(selectAdminState);
 
   const { data: categoriesData, isLoading, isError } = useQuery(['categories-list'], async () => {
     const { data } = await getCategoriesList();
@@ -17,7 +20,15 @@ export default function CategoriesList() {
   });
   return (
     <div className="categories">
-      <h3>Categories</h3>
+      <div className='category-title'>
+        <h4>Categories:</h4>
+        {isAdmin
+          ? <Link href={'/new/category'}>
+            <h4><FontAwesomeIcon icon={faPlus} /> New Category</h4>
+          </Link>
+          : ''
+        }
+      </div>
       <div className="list">
         {isLoading
           ? <Loading />

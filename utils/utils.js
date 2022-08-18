@@ -4,6 +4,7 @@ import {
 } from './constants';
 
 axios.defaults.headers.common.authorization = `Bearer ${BEARER}`;
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // if (typeof window !== 'undefined') {
 //   const token = localStorage.getItem('token');
@@ -11,6 +12,37 @@ axios.defaults.headers.common.authorization = `Bearer ${BEARER}`;
 //     axios.defaults.headers.common.authorization = `X-USER-TOKEN ${token}`;
 //   }
 // }
+const postNewCategory = async (categoryName, userToken) => axios.post(
+  CATEGORY_URL_LINK,
+  { name: categoryName },
+  {
+    headers: {
+      'X-USER-TOKEN': userToken,
+    },
+  },
+);
+
+export const postNewThread = async (categoryId, postTitle, postContent, userToken) => axios.post(
+  THREAD_URL_LINK,
+  {
+    categoryId,
+    name: postTitle,
+    firstPost: {
+      content: postContent,
+    },
+  },
+  {
+    headers: {
+      'X-USER-TOKEN': userToken,
+    },
+  },
+);
+
+export const postNewCategoryAdmin = async (categoryName, post, userToken) => {
+  const { data } = await postNewCategory(categoryName, userToken);
+  const thread = await postNewThread(data.id, post.title, post.content, userToken);
+  return thread.data;
+};
 
 export const getAllPostInThread = async (postId) => axios.get(THREAD_URL_LINK + postId);
 

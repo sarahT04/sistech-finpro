@@ -33,3 +33,9 @@ export default function Home() {
     </>
   );
 }
+
+// {/* <h3 style={{
+// textAlign: 'center', background: 'white', padding: '1rem 0', borderBottom: '1px solid #eaeaea',
+//           }}>
+//             Message
+//           </h3> */}

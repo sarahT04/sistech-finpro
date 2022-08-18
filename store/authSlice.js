@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
-  authState: false, token: null, admin: false, categories: [],
+  authState: false, token: null, isAdmin: false, categories: [],
 };
 
 export const authSlice = createSlice({
@@ -19,7 +19,7 @@ export const authSlice = createSlice({
     },
     setAdminState(state, action) {
       // eslint-disable-next-line no-param-reassign
-      state.admin = action.payload;
+      state.isAdmin = action.payload;
     },
     setCategoriesState(state, action) {
       // eslint-disable-next-line no-param-reassign
@@ -39,6 +39,6 @@ export const {
 } = authSlice.actions;
 export const selectAuthState = (state) => state.auth.authState;
 export const selectToken = (state) => state.auth.token;
-export const selectAdminState = (state) => state.auth.admin;
+export const selectAdminState = (state) => state.auth?.isAdmin;
 export const selectCategoriesState = (state) => state.auth.categories;
 export default authSlice.reducer;

@@ -10,12 +10,12 @@
 
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
   color: var(--secondary-color);
   background: rgb(238, 238, 238);
 }
@@ -204,6 +204,34 @@ nav>li>a {
 
 .comment-stack>.post {
   margin: 0
+}
+
+.category-title {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.category-title > h4 {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.new-thread {
+  text-align: center;
+  cursor: pointer;
+  padding: 1rem 0;
+}
+
+.new-thread:hover {
+  background-color: var(--quartenary-color);
+  transition: background-color 500ms ease;
+}
+
+.message {
+  text-align: center;
+  padding: 10px;
+  background-color: var(--primary-color);
 }
 
 @media screen and (max-width: 600px) {

@@ -3,9 +3,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import ContentWrapper from '../../components/template/ContentWrapper';
 import Loading from '../../components/template/Loading';
-import { selectCategoriesState } from '../../store/authSlice';
+import { selectAuthState, selectCategoriesState } from '../../store/authSlice';
 import { siteTitle, siteDescription } from '../../utils/constants';
 import { getAllThreadsInCategory } from '../../utils/utils';
 
@@ -13,7 +15,8 @@ const threadsInCategoryClient = new QueryClient();
 
 function AllThreadsInCategory() {
   const router = useRouter();
-  const categoriesState = useSelector(selectCategoriesState) || [];
+  const isLoggedIn = useSelector(selectAuthState);
+  const categoriesState = useSelector(selectCategoriesState);
   const { category } = router.query;
   // eslint-disable-next-line max-len
   const categoryId = categoriesState.find((categories) => categories.name === category)?.id;
@@ -25,6 +28,14 @@ function AllThreadsInCategory() {
   return (
     <div className='categories'>
       <h3>Category: {category}</h3>
+      {isLoggedIn
+        ? <div className='new-thread'>
+          <Link href={`/new/thread?category=${category}`}>
+            <h4><FontAwesomeIcon icon={faPlus} /> New Thread</h4>
+          </Link>
+        </div>
+        : ''
+      }
       <div className='list'>
         {isLoading
           ? <Loading />

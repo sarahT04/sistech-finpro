@@ -2,7 +2,9 @@ import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { authenticateUser } from '../utils/utils';
-import { selectAuthState, setAuthState, setToken } from '../store/authSlice';
+import {
+  selectAuthState, setAdminState, setAuthState, setToken,
+} from '../store/authSlice';
 
 // SHOULD BE OK
 
@@ -30,7 +32,10 @@ export default function AuthenticationPage() {
       if (result.data.token) {
         localStorage.setItem('TOKEN', JSON.stringify(result.token));
         dispatch(setAuthState(true));
-        dispatch(setToken(result.token));
+        dispatch(setToken(result.data.token));
+        if (result.data.role === 'admin') {
+          dispatch(setAdminState(true));
+        }
       }
     } catch (err) {
       setMessage(`Unsuccesful ${state}. Please try again.`);
@@ -51,6 +56,9 @@ export default function AuthenticationPage() {
                 <i className="login__icon fas fa-lock"></i>
                 <input type="password" className="login__input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
+              <div style={{ textAlign: 'center', color: 'black' }}>
+              <p>{message}</p>
+            </div>
               <button className="button login__submit"
                 onClick={handleSubmit}>
                 <span className="button__text">{
@@ -75,9 +83,6 @@ export default function AuthenticationPage() {
                 <i className="button__icon fas fa-chevron-right"></i>
               </button>
             </form>
-            <div>
-              <p>{message}</p>
-            </div>
           </div>
           <div className="screen__background">
             <span className="screen__background__shape screen__background__shape4"></span>
