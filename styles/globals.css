@@ -130,7 +130,7 @@ nav>li>a {
 }
 
 .post {
-  width: 70%;
+  width: 100%;
   background-color: var(--primary-color);
   padding: var(--md-rem);
   margin-bottom: var(--md-rem);
@@ -175,6 +175,7 @@ nav>li>a {
 .categories {
   background: var(--primary-color);
   padding: var(--md-rem) 7rem;
+  min-height: 50vh;
 }
 
 .categories>h3 {

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useQuery, QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -10,6 +11,7 @@ import Loading from '../../components/template/Loading';
 import { selectAuthState, selectCategoriesState } from '../../store/authSlice';
 import { siteTitle, siteDescription } from '../../utils/constants';
 import { getAllThreadsInCategory } from '../../utils/utils';
+import ErrorPage from '../../components/404/404';
 
 const threadsInCategoryClient = new QueryClient();
 
@@ -20,7 +22,7 @@ function AllThreadsInCategory() {
   const { category } = router.query;
   // eslint-disable-next-line max-len
   const categoryId = categoriesState.find((categories) => categories.name === category)?.id;
-  const { data: threadDatas, isLoading } = useQuery(['threads-in-a-category'], async () => {
+  const { data: threadDatas, isLoading, isError } = useQuery(['threads-in-a-category'], async () => {
     const { data } = await getAllThreadsInCategory(categoryId);
     return data.data;
   });
@@ -39,13 +41,14 @@ function AllThreadsInCategory() {
       <div className='list'>
         {isLoading
           ? <Loading />
-          : threadDatas.map((data) => (
-            <Link href={`/${data.id}`} key={`${data.id}link`} >
-              <div className='thread'>
-                <p>{data.name}</p>
-              </div>
-            </Link>
-          ))
+          : isError ? <ErrorPage />
+            : threadDatas.map((data) => (
+        <Link href={`/${data.id}`} key={`${data.id}link`} >
+          <div className='thread'>
+            <p>{data.name}</p>
+          </div>
+        </Link>
+            ))
         }
       </div>
     </div>

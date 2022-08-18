@@ -12,26 +12,37 @@ export default function NewThread() {
   const token = useSelector(selectToken);
   const [postTitle, setPostTitle] = useState('');
   const [postContent, setPostContent] = useState('');
+  const [disableButton, setDisableButton] = useState(false);
   const [message, setMessage] = useState(null);
+  const [categorySelect, setCategorySelect] = useState(category);
   const handleThreadSubmit = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line max-len
-    const categoryId = categoriesState.filter((stateCategory) => stateCategory.name === category)[0]?.id;
-    setMessage('done');
-    console.log(categoryId, postTitle, postContent, token);
-    // const res = await postNewThread(categoryId, postTitle, postContent, token);
-    // console.log(res);
-    // router.push('/');
+    const categoryId = categoriesState.find((categoryObject) => categoryObject.name === categorySelect).id;
+    const { status, data } = await postNewThread(categoryId, postTitle, postContent, token);
+    if (status === 200) {
+      setMessage(`Thread has been made with id: ${data.id}`);
+    } else {
+      setMessage('An error occured. Sorry.');
+    }
+    setDisableButton(true);
   };
   return (
     <ContentWrapper>
       <form className="form" onSubmit={handleThreadSubmit}>
-        <select>
-          
+        <h4>Category:</h4>
+        <select value={categorySelect} onChange={(e) => setCategorySelect(e.target.value)}>
+          {
+            categoriesState.map(((categoryState) => (
+              // eslint-disable-next-line max-len
+              <option value={categoryState.name} key={categoryState.id}>{categoryState.name.toUpperCase()}</option>
+            )))
+          }
         </select>
+        <h4>Post:</h4>
         <input id='starter-post-title' value={postTitle} onChange={(e) => setPostTitle(e.target.value)} placeholder="What's your title?" />
         <textarea id="starter-post-content" rows={10} cols={50} value={postContent} onChange={(e) => setPostContent(e.target.value)} placeholder="And the thing you want to discuss about?" />
-        <button>Add Thread</button>
+        <button disabled={disableButton}>Add Thread</button>
       </form>
       {!message ? null
         : <div className='message'>

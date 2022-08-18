@@ -1,25 +1,21 @@
 import axios from 'axios';
 import {
-  BEARER, CATEGORY_URL_LINK, THREAD_URL_LINK, URL_LINK,
+  AUTH_URL_LINK,
+  BEARER, CATEGORY_URL_LINK, THREAD_URL_LINK, VOTE_URL_LINK,
 } from './constants';
 
 axios.defaults.headers.common.authorization = `Bearer ${BEARER}`;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+const makeUserTokenHeader = (userToken) => ({
+  headers: {
+    'X-USER-TOKEN': userToken,
+  },
+});
 
-// if (typeof window !== 'undefined') {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     axios.defaults.headers.common.authorization = `X-USER-TOKEN ${token}`;
-//   }
-// }
 const postNewCategory = async (categoryName, userToken) => axios.post(
   CATEGORY_URL_LINK,
   { name: categoryName },
-  {
-    headers: {
-      'X-USER-TOKEN': userToken,
-    },
-  },
+  makeUserTokenHeader(userToken),
 );
 
 export const postNewThread = async (categoryId, postTitle, postContent, userToken) => axios.post(
@@ -31,11 +27,8 @@ export const postNewThread = async (categoryId, postTitle, postContent, userToke
       content: postContent,
     },
   },
-  {
-    headers: {
-      'X-USER-TOKEN': userToken,
-    },
-  },
+  makeUserTokenHeader(userToken),
+
 );
 
 export const postNewCategoryAdmin = async (categoryName, post, userToken) => {
@@ -54,7 +47,7 @@ export const getAllThreadsInCategory = async (categoryId) => axios.get(CATEGORY_
 export const authenticateUser = async ({ state, username, password }) => {
   if (state === 'register') {
     return axios.post(
-      `${URL_LINK}auth/${state}`,
+      `${AUTH_URL_LINK}${state}`,
       {
         username,
         password,
@@ -63,7 +56,7 @@ export const authenticateUser = async ({ state, username, password }) => {
     );
   }
   return axios.post(
-    `${URL_LINK}auth/${state}`,
+    `${AUTH_URL_LINK}${state}`,
     {
       username,
       password,
@@ -71,6 +64,20 @@ export const authenticateUser = async ({ state, username, password }) => {
   );
 };
 
-export const dateToEnUsString = (dateString) => new Date(dateString).toLocaleDateString('en-US');
+export const handleUpvote = async (userToken, postId) => axios.post(
+  VOTE_URL_LINK,
+  {
+    postId,
+    voteType: 'upvote',
+  },
+  makeUserTokenHeader(userToken),
+);
 
-export const getPageParamFromString = (string) => Number(string?.split('=')[1]);
+export const handleDownvote = async (userToken, postId) => axios.post(
+  VOTE_URL_LINK,
+  {
+    postId,
+    voteType: 'downvote',
+  },
+  makeUserTokenHeader(userToken),
+);

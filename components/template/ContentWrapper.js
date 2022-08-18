@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
-import { selectAdminState, selectAuthState, setAdminState, setAuthState, setToken } from '../../store/authSlice';
+import {
+  selectAuthState, setAdminState, setAuthState, setToken,
+} from '../../store/authSlice';
 import catLogo from '../../public/cat_logo.png';
 
 export default function ContentWrapper({ children }) {
@@ -42,8 +44,9 @@ function UserProfile() {
   const dispatch = useDispatch();
   const onUserLogout = () => {
     localStorage.removeItem('TOKEN');
+    localStorage.removeItem('userId');
     dispatch(setAuthState(false));
-    dispatch(selectAdminState(false));
+    dispatch(setAdminState(false));
     dispatch(setToken(null));
   };
   return (

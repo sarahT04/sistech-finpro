@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // eslint-disable-next-line import/no-cycle
 import Comments from './Comments';
 
@@ -7,7 +8,7 @@ export default function CommentList({ comments, allComments }) {
       {comments
         ? comments.map((comment) => (
           <div key={comment.id} className="comment-stack">
-            <Comments {...comment} allComments={allComments} replies={
+            <Comments {...comment} userId={allComments.currentUserId} allComments={allComments} replies={
               Object.prototype.hasOwnProperty?.call(allComments, comment.id)
                 ? allComments[comment.id] : []
             } />

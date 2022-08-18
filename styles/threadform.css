@@ -27,7 +27,7 @@
     resize: none;
 }
 
-:is(input, textarea):focus {
+:is(input, textarea, select):focus {
     outline: none;
 }
 
@@ -44,4 +44,11 @@
 .form > button:hover {
     background-color: var(--secondary-color);
     transition: background-color 500ms ease;
+}
+
+.form > select {
+    margin-top: 1rem;
+    padding: 5px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 12px;
 }

@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import Head from 'next/head';
+import jwt from 'jwt-decode';
 import ContentWrapper from '../components/template/ContentWrapper';
 import Post from '../components/posts/Post';
 import { siteTitle, siteDescription } from '../utils/constants';
@@ -6,6 +8,13 @@ import { getAllPostInThread } from '../utils/utils';
 import CommentList from '../components/posts/CommentList';
 
 export default function SSRID({ name, starterPost, comments }) {
+  const userLocal = window.localStorage.getItem('TOKEN');
+  if (userLocal) {
+    const { iss } = jwt(JSON.parse(userLocal));
+    comments.currentUserId = iss;
+    starterPost.currentUserId = iss;
+  }
+
   return (
     <>
       <Head>
