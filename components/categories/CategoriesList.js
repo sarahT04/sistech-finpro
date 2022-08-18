@@ -26,7 +26,7 @@ export default function CategoriesList() {
           ? <Link href={'/new/category'}>
             <h4><FontAwesomeIcon icon={faPlus} /> New Category</h4>
           </Link>
-          : ''
+          : null
         }
       </div>
       <div className="list">

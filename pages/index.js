@@ -25,7 +25,7 @@ export default function Home() {
               also as a medium to share the cool stuffs and be comfortable with each other.<br />
               So please, no attacking. We are all cool people!
             </h3>
-            <Image src={catImage} alt={`${siteTitle} logo`} />
+            <Image src={catImage} alt={`${siteTitle} logo`} objectFit='contain' />
           </div>
           <CategoriesList />
         </QueryClientProvider>

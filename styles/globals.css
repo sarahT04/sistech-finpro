@@ -138,7 +138,7 @@ nav>li>a {
 }
 
 .vote-div {
-  width: 80px;
+  width: 120px;
   display: flex;
   justify-content: space-between;
 }
@@ -235,6 +235,11 @@ nav>li>a {
   background-color: var(--primary-color);
 }
 
+.edited {
+  color: grey;
+  font-size: smaller;
+}
+
 @media screen and (max-width: 600px) {
   #logo-header>h1 {
     display: none
@@ -248,6 +253,21 @@ nav>li>a {
 
   #register {
     display: none;
+  }
+  footer {
+    flex-direction: column;
+    overflow: scroll;
+  }
+  .index {
+    padding: 1rem;
+  }
+  .categories {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .list {
+    padding: 0;
   }
 }
 

@@ -1,23 +1,43 @@
-/* eslint-disable no-param-reassign */
 import Head from 'next/head';
 import jwt from 'jwt-decode';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ContentWrapper from '../components/template/ContentWrapper';
 import Post from '../components/posts/Post';
 import { siteTitle, siteDescription } from '../utils/constants';
 import { getAllPostInThread } from '../utils/utils';
 import CommentList from '../components/posts/CommentList';
+import UserCommentComponent from '../components/posts/UserComment';
+import { selectAdminState } from '../store/authSlice';
 
-export default function SSRID({ name, starterPost, comments }) {
-  const userLocal = window.localStorage.getItem('TOKEN');
-  if (userLocal) {
-    const userToken = JSON.parse(userLocal);
-    const tokenDecoded = jwt(userToken);
-    comments.currentUserId = tokenDecoded.iss;
-    starterPost.currentUserId = tokenDecoded.iss;
-    comments.currentUserToken = userToken;
-    starterPost.currentUserToken = userToken;
-  }
+export default function SSRID({
+  name, starterPost, commentsByParentsId, comments, threadId,
+}) {
+  const [currentUserInfo, setCurrentUserInfo] = useState(null);
+  const [commentId, setCommentId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const isAdmin = useSelector(selectAdminState);
 
+  useEffect(() => {
+    const userLocal = window.localStorage.getItem('TOKEN');
+    if (userLocal) {
+      const userToken = JSON.parse(userLocal);
+      const tokenDecoded = jwt(userToken);
+      setCurrentUserInfo({
+        userId: tokenDecoded.iss,
+        userToken,
+      });
+      if (isAdmin) {
+        setCurrentUserInfo(
+          {
+            userId: tokenDecoded.iss,
+            userToken,
+            isAdmin: true,
+          },
+        );
+      }
+    }
+  }, [isAdmin]);
   return (
     <>
       <Head>
@@ -27,8 +47,22 @@ export default function SSRID({ name, starterPost, comments }) {
 
       <ContentWrapper>
         <div className='list'>
-          <Post name={name} {...starterPost} />
-          <CommentList comments={comments[starterPost.id]} allComments={comments} />
+          <Post name={name} {...starterPost} currentUserInfo={currentUserInfo}
+            setCommentId={setCommentId} setIsEditing={setIsEditing} />
+          <CommentList comments={commentsByParentsId[starterPost.id]}
+            allComments={commentsByParentsId} currentUserInfo={currentUserInfo}
+            setCommentId={setCommentId} setIsEditing={setIsEditing} />
+          {
+            commentId
+              ? <UserCommentComponent
+                isEditing={isEditing}
+                threadId={threadId}
+                userToken={!currentUserInfo || currentUserInfo.userToken}
+                commentContent={comments.find((comment) => comment.id === commentId).content}
+                commentId={commentId}
+              />
+              : null
+          }
         </div>
       </ContentWrapper>
     </>
@@ -54,6 +88,12 @@ export async function getServerSideProps(context) {
     commentsByParentsId[comment.replyId].push(comment);
   });
   return {
-    props: { name, starterPost, comments: commentsByParentsId },
+    props: {
+      name,
+      starterPost,
+      commentsByParentsId,
+      comments: data.data,
+      threadId: id,
+    },
   };
 }

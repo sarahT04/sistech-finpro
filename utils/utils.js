@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   AUTH_URL_LINK,
-  BEARER, CATEGORY_URL_LINK, THREAD_URL_LINK, VOTE_URL_LINK,
+  BEARER, CATEGORY_URL_LINK, POST_URL_LINK, THREAD_URL_LINK, VOTE_URL_LINK,
 } from './constants';
 
 axios.defaults.headers.common.authorization = `Bearer ${BEARER}`;
@@ -11,6 +11,24 @@ const makeUserTokenHeader = (userToken) => ({
     'X-USER-TOKEN': userToken,
   },
 });
+
+export const putUserEdit = async (postId, content, userToken) => axios.put(
+  POST_URL_LINK + postId,
+  {
+    content,
+  },
+  makeUserTokenHeader(userToken),
+);
+
+export const postUserComment = async (threadId, content, replyId, userToken) => axios.post(
+  POST_URL_LINK,
+  {
+    threadId,
+    content,
+    replyId,
+  },
+  makeUserTokenHeader(userToken),
+);
 
 const postNewCategory = async (categoryName, userToken) => axios.post(
   CATEGORY_URL_LINK,
@@ -78,6 +96,19 @@ export const handleDownvote = async (postId, userToken) => axios.post(
   {
     postId,
     voteType: 'downvote',
+  },
+  makeUserTokenHeader(userToken),
+);
+
+export const handleDelete = async (postId, userToken) => axios.delete(
+  POST_URL_LINK + postId,
+  makeUserTokenHeader(userToken),
+);
+
+export const putNewCategoryName = async (categoryId, name, userToken) => axios.put(
+  CATEGORY_URL_LINK + categoryId,
+  {
+    name,
   },
   makeUserTokenHeader(userToken),
 );

@@ -48,6 +48,7 @@ function UserProfile() {
     dispatch(setAuthState(false));
     dispatch(setAdminState(false));
     dispatch(setToken(null));
+    window.location.reload();
   };
   return (
     <div className='dropdown'>

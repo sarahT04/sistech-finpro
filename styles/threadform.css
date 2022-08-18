@@ -20,7 +20,7 @@
 .form > textarea {
     margin-top: 1rem;
     padding: 10px;
-    width: 50vw;
+    width: 80vw;
     border-radius: 1rem;
     border: none;
     border: 1px solid var(--secondary-color);

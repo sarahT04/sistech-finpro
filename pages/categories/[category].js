@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 import ContentWrapper from '../../components/template/ContentWrapper';
 import Loading from '../../components/template/Loading';
-import { selectAuthState, selectCategoriesState } from '../../store/authSlice';
+import { selectAdminState, selectAuthState, selectCategoriesState } from '../../store/authSlice';
 import { siteTitle, siteDescription } from '../../utils/constants';
 import { getAllThreadsInCategory } from '../../utils/utils';
 import ErrorPage from '../../components/404/404';
@@ -19,6 +19,7 @@ function AllThreadsInCategory() {
   const router = useRouter();
   const isLoggedIn = useSelector(selectAuthState);
   const categoriesState = useSelector(selectCategoriesState);
+  const isAdmin = useSelector(selectAdminState);
   const { category } = router.query;
   // eslint-disable-next-line max-len
   const categoryId = categoriesState.find((categories) => categories.name === category)?.id;
@@ -29,7 +30,16 @@ function AllThreadsInCategory() {
 
   return (
     <div className='categories'>
-      <h3>Category: {category}</h3>
+      <div className='category-title'>
+        <h3>Category: {category}</h3>
+        {
+          isAdmin
+            ? <Link href={`/edit/category?category=${category}`}>
+              <h4><FontAwesomeIcon icon={faEdit} /> Edit Category</h4>
+            </Link>
+            : null
+        }
+      </div>
       {isLoggedIn
         ? <div className='new-thread'>
           <Link href={`/new/thread?category=${category}`}>
@@ -43,11 +53,11 @@ function AllThreadsInCategory() {
           ? <Loading />
           : isError ? <ErrorPage />
             : threadDatas.map((data) => (
-        <Link href={`/${data.id}`} key={`${data.id}link`} >
-          <div className='thread'>
-            <p>{data.name}</p>
-          </div>
-        </Link>
+              <Link href={`/${data.id}`} key={`${data.id}link`} >
+                <div className='thread'>
+                  <p>{data.name}</p>
+                </div>
+              </Link>
             ))
         }
       </div>
