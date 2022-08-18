@@ -10,9 +10,12 @@ import CommentList from '../components/posts/CommentList';
 export default function SSRID({ name, starterPost, comments }) {
   const userLocal = window.localStorage.getItem('TOKEN');
   if (userLocal) {
-    const { iss } = jwt(JSON.parse(userLocal));
-    comments.currentUserId = iss;
-    starterPost.currentUserId = iss;
+    const userToken = JSON.parse(userLocal);
+    const tokenDecoded = jwt(userToken);
+    comments.currentUserId = tokenDecoded.iss;
+    starterPost.currentUserId = tokenDecoded.iss;
+    comments.currentUserToken = userToken;
+    starterPost.currentUserToken = userToken;
   }
 
   return (

@@ -64,7 +64,7 @@ export const authenticateUser = async ({ state, username, password }) => {
   );
 };
 
-export const handleUpvote = async (userToken, postId) => axios.post(
+export const handleUpvote = async (postId, userToken) => axios.post(
   VOTE_URL_LINK,
   {
     postId,
@@ -73,7 +73,7 @@ export const handleUpvote = async (userToken, postId) => axios.post(
   makeUserTokenHeader(userToken),
 );
 
-export const handleDownvote = async (userToken, postId) => axios.post(
+export const handleDownvote = async (postId, userToken) => axios.post(
   VOTE_URL_LINK,
   {
     postId,

@@ -4,16 +4,16 @@ import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { handleDownvote, handleUpvote } from '../../utils/utils';
 
 export default function VoteSection({
-  postId, upvote, downvote, disabled,
+  postId, upvote, downvote, disabled, userToken,
 }) {
   return (
     <div className="vote-div">
       <section>
-        <FontAwesomeIcon style={disabled ? { color: 'grey' } : null} icon={faArrowUp} onClick={disabled ? null : () => handleUpvote(postId)} />
+        <FontAwesomeIcon style={disabled ? { color: 'grey' } : { cursor: 'pointer' }} icon={faArrowUp} onClick={disabled ? null : () => handleUpvote(postId, userToken)} />
         <span>{upvote}</span>
       </section>
       <section>
-        <FontAwesomeIcon style={disabled ? { color: 'grey' } : null} icon={faArrowDown} onClick={disabled ? null : () => handleDownvote(postId)} />
+        <FontAwesomeIcon style={disabled ? { color: 'grey' } : { cursor: 'pointer' }} icon={faArrowDown} onClick={disabled ? null : () => handleDownvote(postId, userToken)} />
         <span>{downvote}</span>
       </section>
     </div>
