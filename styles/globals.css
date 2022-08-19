@@ -240,6 +240,10 @@ nav>li>a {
   font-size: smaller;
 }
 
+.error {
+  text-align: center;
+}
+
 @media screen and (max-width: 600px) {
   #logo-header>h1 {
     display: none

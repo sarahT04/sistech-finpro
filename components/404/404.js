@@ -1,5 +1,7 @@
 export default function ErrorPage() {
   return (
-    <p>Sorry, error occured.</p>
+    <div className="error">
+      <h2>Sorry, error occured.</h2>
+    </div>
   );
 }

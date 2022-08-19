@@ -42,10 +42,12 @@ export default function SSRID({
   return (
     <>
       {error
-        ? <ErrorPage />
+        ? <ContentWrapper>
+          <ErrorPage />
+        </ContentWrapper>
         : <>
           <Head>
-            <title>{`${name} ${siteTitle}`}</title>
+            <title>{`${name} - ${siteTitle}`}</title>
             <meta name="description" content={siteDescription} />
           </Head>
 
