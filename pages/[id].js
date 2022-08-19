@@ -9,9 +9,10 @@ import { getAllPostInThread } from '../utils/utils';
 import CommentList from '../components/posts/CommentList';
 import UserCommentComponent from '../components/posts/UserComment';
 import { selectAdminState } from '../store/authSlice';
+import ErrorPage from '../components/404/404';
 
 export default function SSRID({
-  name, starterPost, commentsByParentsId, comments, threadId,
+  name, starterPost, commentsByParentsId, comments, threadId, error,
 }) {
   const [currentUserInfo, setCurrentUserInfo] = useState(null);
   const [commentId, setCommentId] = useState(null);
@@ -19,7 +20,7 @@ export default function SSRID({
   const isAdmin = useSelector(selectAdminState);
 
   useEffect(() => {
-    const userLocal = window.localStorage.getItem('TOKEN');
+    const userLocal = window.sessionStorage.getItem('TOKEN');
     if (userLocal) {
       const userToken = JSON.parse(userLocal);
       const tokenDecoded = jwt(userToken);
@@ -40,31 +41,39 @@ export default function SSRID({
   }, [isAdmin]);
   return (
     <>
-      <Head>
-        <title>{`${name} ${siteTitle}`}</title>
-        <meta name="description" content={siteDescription} />
-      </Head>
+      {error
+        ? <ErrorPage />
+        : <>
+          <Head>
+            <title>{`${name} ${siteTitle}`}</title>
+            <meta name="description" content={siteDescription} />
+          </Head>
 
-      <ContentWrapper>
-        <div className='list'>
-          <Post name={name} {...starterPost} currentUserInfo={currentUserInfo}
-            setCommentId={setCommentId} setIsEditing={setIsEditing} />
-          <CommentList comments={commentsByParentsId[starterPost.id]}
-            allComments={commentsByParentsId} currentUserInfo={currentUserInfo}
-            setCommentId={setCommentId} setIsEditing={setIsEditing} />
-          {
-            commentId
-              ? <UserCommentComponent
-                isEditing={isEditing}
-                threadId={threadId}
-                userToken={!currentUserInfo || currentUserInfo.userToken}
-                commentContent={comments.find((comment) => comment.id === commentId).content}
-                commentId={commentId}
-              />
-              : null
-          }
-        </div>
-      </ContentWrapper>
+          <ContentWrapper>
+            <div className='list'>
+              <Post name={name} {...starterPost} currentUserInfo={currentUserInfo}
+                setCommentId={setCommentId} setIsEditing={setIsEditing} />
+              <CommentList comments={commentsByParentsId[starterPost.id]}
+                allComments={commentsByParentsId} currentUserInfo={currentUserInfo}
+                setCommentId={setCommentId} setIsEditing={setIsEditing} />
+              {
+                commentId
+                  ? <UserCommentComponent
+                    isEditing={isEditing}
+                    threadId={threadId}
+                    userToken={!currentUserInfo || currentUserInfo.userToken}
+                    commentContent={comments.find((comment) => comment.id === commentId).content}
+                    commentId={commentId}
+                    setCommentId={setCommentId}
+                    // eslint-disable-next-line max-len
+                    isStarter={starterPost.id === commentId && starterPost.owner === currentUserInfo.userId}
+                  />
+                  : null
+              }
+            </div>
+          </ContentWrapper>
+        </>
+      }
     </>
   );
 }
@@ -72,7 +81,14 @@ export default function SSRID({
 // eslint-disable-next-line import/prefer-default-export
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  const { data } = await getAllPostInThread(id);
+  const { data, status } = await getAllPostInThread(id);
+  if (status !== 200) {
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
   const { name } = data;
   const commentsByParentsId = {};
   let starterPost = {};

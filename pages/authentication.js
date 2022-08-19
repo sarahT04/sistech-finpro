@@ -30,7 +30,7 @@ export default function AuthenticationPage() {
         setMessage('Succesful. Please login');
       }
       if (result.data.token) {
-        localStorage.setItem('TOKEN', JSON.stringify(result.data.token));
+        sessionStorage.setItem('TOKEN', JSON.stringify(result.data.token));
         dispatch(setAuthState(true));
         dispatch(setToken(result.data.token));
         if (result.data.role === 'admin') {

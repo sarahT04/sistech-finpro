@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { handleDownvote, handleUpvote, handleDelete } from '../../utils/utils';
 
 export default function VoteSection({
-  postId, upvote, downvote, disabled, currentUserInfo, setCommentId, setIsEditing, isStarter,
+  postId, upvote, downvote, disabled: isUserPost, currentUserInfo, setCommentId, setIsEditing, isStarter,
 }) {
   const [upvoteAmount, setUpvoteAmount] = useState(upvote);
   const [downvoteAmount, setDownvoteAmount] = useState(downvote);
@@ -16,8 +16,8 @@ export default function VoteSection({
     <div className="vote-div">
       <section>
         {/* Upvote */}
-        <FontAwesomeIcon style={disabled ? { color: 'grey' } : { cursor: 'pointer' }} icon={faArrowUp}
-          onClick={disabled ? null : () => {
+        <FontAwesomeIcon style={isUserPost ? { color: 'grey' } : { cursor: 'pointer' }} icon={faArrowUp}
+          onClick={isUserPost ? null : () => {
             handleUpvote(postId, currentUserInfo.userToken);
             setUpvoteAmount(upvoteAmount + 1);
           }} />
@@ -25,8 +25,8 @@ export default function VoteSection({
       </section>
       <section>
         {/* Downvote */}
-        <FontAwesomeIcon style={disabled ? { color: 'grey' } : { cursor: 'pointer' }} icon={faArrowDown}
-          onClick={disabled ? null : () => {
+        <FontAwesomeIcon style={isUserPost ? { color: 'grey' } : { cursor: 'pointer' }} icon={faArrowDown}
+          onClick={isUserPost ? null : () => {
             handleDownvote(postId, currentUserInfo.userToken);
             setDownvoteAmount(downvoteAmount + 1);
           }} />
@@ -42,7 +42,7 @@ export default function VoteSection({
       </section>
       {/* Editing */}
       {
-        superPower || disabled
+        currentUserInfo && (superPower || isUserPost)
           ? <section>
             <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faEdit}
               onClick={() => {
@@ -54,7 +54,7 @@ export default function VoteSection({
       }
       {/* Deleting */}
       {
-        (superPower && !isStarter) || (disabled && !isStarter)
+        currentUserInfo && ((superPower && !isStarter) || (isUserPost && !isStarter))
           ? <section>
             <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faTrash}
               onClick={() => {

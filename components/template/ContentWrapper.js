@@ -1,13 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-
-import {
-  selectAuthState, setAdminState, setAuthState, setToken,
-} from '../../store/authSlice';
+import { selectAuthState } from '../../store/authSlice';
 import catLogo from '../../public/cat_logo.png';
 
 export default function ContentWrapper({ children }) {
@@ -41,13 +38,8 @@ export function Footer() {
 }
 
 function UserProfile() {
-  const dispatch = useDispatch();
   const onUserLogout = () => {
-    localStorage.removeItem('TOKEN');
-    localStorage.removeItem('userId');
-    dispatch(setAuthState(false));
-    dispatch(setAdminState(false));
-    dispatch(setToken(null));
+    sessionStorage.removeItem('TOKEN');
     window.location.reload();
   };
   return (
@@ -62,7 +54,6 @@ function UserProfile() {
 }
 
 function Header() {
-  // localStorage.setItem('TOKEN', JSON.stringify(result.token));
   const authState = useSelector(selectAuthState);
   const router = useRouter();
 
@@ -74,7 +65,6 @@ function Header() {
           <h1 title="Erika">Erika</h1>
         </div>
       </Link>
-      {/* <Navbar /> */}
       {
         authState
           ? <UserProfile />
@@ -86,17 +76,3 @@ function Header() {
     </header>
   );
 }
-
-// function Navbar() {
-//   return (
-//     <nav>
-//       <li>
-//         <Link href="/categories">
-//           <a>Categories</a>
-//         </Link>
-//       </li>
-//     </nav >
-//   );
-// }
-
-// style={{ marginLeft: '100%' }}

@@ -258,6 +258,11 @@ nav>li>a {
     flex-direction: column;
     overflow: scroll;
   }
+  .category-title {
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+
   .index {
     padding: 1rem;
   }
@@ -272,7 +277,7 @@ nav>li>a {
 }
 
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
@@ -283,4 +288,4 @@ nav>li>a {
     --tertiary-color: white;
     --quartenary-color: #eaeaea;
   }
-} */
+}

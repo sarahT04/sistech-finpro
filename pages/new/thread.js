@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import ErrorPage from '../../components/404/404';
 import ContentWrapper from '../../components/template/ContentWrapper';
 import { selectCategoriesState, selectToken } from '../../store/authSlice';
 import { postNewThread } from '../../utils/utils';
@@ -29,25 +30,28 @@ export default function NewThread() {
   };
   return (
     <ContentWrapper>
-      <form className="form" onSubmit={handleThreadSubmit}>
-        <h4>Category:</h4>
-        <select value={categorySelect} onChange={(e) => setCategorySelect(e.target.value)}>
-          {
-            categoriesState.map(((categoryState) => (
-              // eslint-disable-next-line max-len
-              <option value={categoryState.name} key={categoryState.id}>{categoryState.name.toUpperCase()}</option>
-            )))
-          }
-        </select>
-        <h4>Post:</h4>
-        <input id='starter-post-title' value={postTitle} onChange={(e) => setPostTitle(e.target.value)} placeholder="What's your title?" />
-        <textarea id="starter-post-content" rows={10} cols={50} value={postContent} onChange={(e) => setPostContent(e.target.value)} placeholder="And the thing you want to discuss about?" />
-        <button disabled={disableButton}>Add Thread</button>
-      </form>
-      {!message ? null
-        : <div className='message'>
-          <h4>{message}</h4>
-        </div>
+      {token
+        ? <><form className="form" onSubmit={handleThreadSubmit}>
+          <h4>Category:</h4>
+          <select value={categorySelect} onChange={(e) => setCategorySelect(e.target.value)}>
+            {
+              categoriesState.map(((categoryState) => (
+                // eslint-disable-next-line max-len
+                <option value={categoryState.name} key={categoryState.id}>{categoryState.name.toUpperCase()}</option>
+              )))
+            }
+          </select>
+          <h4>Post:</h4>
+          <input id='starter-post-title' value={postTitle} onChange={(e) => setPostTitle(e.target.value)} placeholder="What's your title?" />
+          <textarea id="starter-post-content" rows={10} cols={50} value={postContent} onChange={(e) => setPostContent(e.target.value)} placeholder="And the thing you want to discuss about?" />
+          <button disabled={disableButton}>Add Thread</button>
+        </form>
+          {!message ? null
+            : <div className='message'>
+              <h4>{message}</h4>
+            </div>
+          }</>
+        : <ErrorPage />
       }
     </ContentWrapper>
   );
