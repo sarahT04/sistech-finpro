@@ -1,6 +1,6 @@
 # RISTEK Sistech Mentorship Program Software Engineering Final Project
 
-This project is a 
+This project was bootstrapped with [Create Next App](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Background
 
